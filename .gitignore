@@ -1,0 +1,27 @@
+# Objetos y binarios
+build/
+*.o
+analizador
+
+# Archivos generados
+output/
+lex.yy.c
+
+# LaTeX auxiliares
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
+
+# Empaquetado
+*.tgz
+
+# Temporales
+*.tmp
+
+# Editor
+.vscode/
+

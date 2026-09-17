@@ -1,0 +1,2 @@
+#define MAGIC_NUMBER 42
+int helper_var = 99;

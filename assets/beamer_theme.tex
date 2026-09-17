@@ -1,0 +1,25 @@
+% assets/beamer_theme.tex
+% Configuración de tema visual y estilos para el reporte Beamer (Proyecto 1)
+% Fase 6: Criterio de calidad y paleta de colores para categorías léxicas
+
+% Paleta de colores para categorías léxicas
+\definecolor{TokenKeyword}{RGB}{0, 51, 153}       % Azul oscuro
+\definecolor{TokenIdent}{RGB}{34, 34, 34}         % Gris muy oscuro / negro
+\definecolor{TokenNum}{RGB}{204, 102, 0}          % Naranja
+\definecolor{TokenString}{RGB}{0, 128, 0}         % Verde oscuro
+\definecolor{TokenChar}{RGB}{0, 128, 128}         % Verde azulado (Teal)
+\definecolor{TokenOp}{RGB}{128, 0, 128}           % Morado
+\definecolor{TokenSep}{RGB}{102, 102, 102}        % Gris medio
+\definecolor{TokenErrBg}{RGB}{255, 204, 204}      % Fondo rojo suave
+\definecolor{TokenErrText}{RGB}{178, 34, 34}      % Rojo oscuro
+
+% Comandos semánticos para resaltado léxico
+\newcommand{\tokenKeyword}[1]{\textbf{\textcolor{TokenKeyword}{#1}}}
+\newcommand{\tokenIdent}[1]{\textcolor{TokenIdent}{#1}}
+\newcommand{\tokenNumber}[1]{\textcolor{TokenNum}{#1}}
+\newcommand{\tokenString}[1]{\textcolor{TokenString}{#1}}
+\newcommand{\tokenChar}[1]{\textcolor{TokenChar}{#1}}
+\newcommand{\tokenOperator}[1]{\textbf{\textcolor{TokenOp}{#1}}}
+\newcommand{\tokenSeparator}[1]{\textcolor{TokenSep}{#1}}
+\newcommand{\tokenError}[1]{\colorbox{TokenErrBg}{\textbf{\textcolor{TokenErrText}{#1}}}}
+
