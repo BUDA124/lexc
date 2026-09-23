@@ -3,39 +3,79 @@
 
 #include <stddef.h>
 
-/* Tipos de tokens reconocidos por el analizador léxico */
+// Tipo de tokens
 typedef enum {
-    TOK_KEYWORD,           /* Palabras reservadas de C */
-    TOK_IDENTIFIER,        /* Identificadores */
-    TOK_INTEGER_LITERAL,   /* Literales enteros */
-    TOK_FLOAT_LITERAL,     /* Literales de punto flotante */
-    TOK_CHAR_LITERAL,      /* Literales de carácter */
-    TOK_STRING_LITERAL,    /* Literales de cadena */
-    TOK_OPERATOR,          /* Operadores */
-    TOK_SEPARATOR,         /* Separadores (delimitadores) */
-    TOK_WHITESPACE,        /* Espacios en blanco */
-    TOK_NEWLINE,           /* Saltos de línea */
-    TOK_LEXICAL_ERROR,     /* Errores léxicos */
-    TOK_EOF,               /* Fin de archivo */
-    TOK_TYPE_COUNT         /* Número total de tipos (usar para dimensionar arreglos) */
+    // Palabras reservadas
+    TOK_IF,
+    TOK_ELIF,
+    TOK_ELSE,
+    TOK_WHILE,
+    TOK_FOR,
+    TOK_RETURN,
+    TOK_INTEGER,
+    TOK_FLOAT,
+    TOK_CHAR,
+    TOK_DOUBLE,
+    TOK_VOID,
+    TOK_DECVAR,
+    TOK_ENDDEC,
+    TOK_END,
+    TOK_WRITE,
+    TOK_READ,
+    
+    //Identificadores y constantes
+    TOK_IDENTIFICADOR,
+    TOK_CONSTAINTEGER,
+    TOK_CONSTAFLOAT,
+    TOK_CONSTCADENA,
+    
+    // Operadores
+    TOK_OPSUMA,
+    TOK_OPRESTA,
+    TOK_OPMULTIPLICACION,
+    TOK_OPDIVISION,
+    TOK_OPIGUAL,
+    TOK_OPMAYOR,
+    TOK_OPMENOR,
+    TOK_OPMAYORIGUAL,
+    TOK_OPMENORIGUAL,
+    TOK_OPIGUALDAD,
+    TOK_OPDIFERENTE,
+    TOK_OPNEGACION,
+    TOK_OPDOSPUNTOS,
+    
+    //Separadores
+    TOK_LLAVEABIERTA,
+    TOK_LLAVECERRADA,
+    TOK_PARENTESISABIERTA,
+    TOK_PARENTESISCERRADA,
+    TOK_FINSENTENCIA,
+    TOK_CHARCOMA,
+    TOK_CHARPUNTO,
+    
+    //Especiales
+    TOK_WHITESPACE,
+    TOK_NEWLINE,
+    TOK_LEXICAL_ERROR,
+    TOK_EOF,
+    TOK_TYPE_COUNT
 } TokenType;
 
-/* Estructura que representa un token individual */
+
+// Estructura del token
 typedef struct {
-    TokenType type;        /* Tipo del token */
-    char *lexeme;          /* Texto del lexema (memoria dinámica, liberar con token_destroy) */
-    long line;             /* Línea donde se encontró */
-    long column;           /* Columna donde se encontró */
-    double numeric_value;  /* Valor numérico (para literales numéricos) */
+    TokenType type;
+    char *lexeme;
+    long line;
+    long column;
+    double numeric_value;
 } Token;
 
-/* Libera la memoria dinámica asociada a un token */
-void token_destroy(Token *token);
 
-/* Retorna el nombre legible del tipo de token */
-const char *token_type_name(TokenType type);
-
-/* Crea un token con los valores dados. Duplica el lexema internamente. */
+//funciones publicas
 Token token_create(TokenType type, const char *lexeme, long line, long column);
+void token_destroy(Token *token);
+const char *token_type_name(TokenType type);
+const char *token_category(TokenType type);
 
-#endif /* TOKEN_H */
+#endif 
