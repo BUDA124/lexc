@@ -38,7 +38,7 @@ int parse_arguments(int argc, char **argv, ProgramOptions *options) {
     options->show_help = 0;
     options->input_path = NULL;
     options->group_members = "Equipo Proyecto 1";
-    options->course_term = "2025-2";
+    options->course_term = "2026-2";
 
     optind = 1; /* Reset getopt */
 
