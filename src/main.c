@@ -67,10 +67,10 @@ int main(int argc, char **argv) {
     Token tok;
     do {
         tok = get_token();
-        stats_add(&stats, &tok);
 
-        // Store token for report (except EOF)
+        // Store token for report and accumulate stats (except EOF)
         if (tok.type != TOK_EOF) {
+            stats_add(&stats, &tok);
             if (token_count >= token_cap) {
                 token_cap *= 2;
                 Token *tmp = realloc(tokens, token_cap * sizeof(Token));
@@ -97,29 +97,33 @@ int main(int argc, char **argv) {
     // 6. Print statistics summary
     stats_print(&stats);
 
-    // 7. Generate report
-    fprintf(stdout, "[3/4] Generando reporte Beamer -> '%s'...\n", options.pdf_path);
-    ReportConfig report_config = {
-        .processed_source_path = temp_path,
-        .tex_path = options.tex_path,
-        .pdf_path = options.pdf_path,
-        .group_members = options.group_members,
-        .course_term = options.course_term,
-        .open_viewer = !options.no_viewer,
-        .tokens = tokens,
-        .token_count = token_count
-    };
+    // 7. Generate report (unless scan-only mode)
+    if (options.scan_only) {
+        fprintf(stdout, "[3/3] Modo scan-only: reporte omitido.\n");
+    } else {
+        fprintf(stdout, "[3/4] Generando reporte Beamer -> '%s'...\n", options.pdf_path);
+        ReportConfig report_config = {
+            .processed_source_path = temp_path,
+            .tex_path = options.tex_path,
+            .pdf_path = options.pdf_path,
+            .group_members = options.group_members,
+            .course_term = options.course_term,
+            .open_viewer = !options.no_viewer,
+            .tokens = tokens,
+            .token_count = token_count
+        };
 
-    if (generate_beamer_report(&report_config, &stats) != 0) {
-        fprintf(stderr, "Error al generar reporte: %s\n",
-                report_last_error() ? report_last_error() : "desconocido");
-        // Cleanup
-        for (size_t i = 0; i < token_count; i++) token_destroy(&tokens[i]);
-        free(tokens);
-        return EXIT_FAILURE;
+        if (generate_beamer_report(&report_config, &stats) != 0) {
+            fprintf(stderr, "Error al generar reporte: %s\n",
+                    report_last_error() ? report_last_error() : "desconocido");
+            // Cleanup
+            for (size_t i = 0; i < token_count; i++) token_destroy(&tokens[i]);
+            free(tokens);
+            return EXIT_FAILURE;
+        }
+
+        fprintf(stdout, "[4/4] Reporte generado exitosamente: '%s'\n", options.pdf_path);
     }
-
-    fprintf(stdout, "[4/4] Reporte generado exitosamente: '%s'\n", options.pdf_path);
 
     // 8. Cleanup
     for (size_t i = 0; i < token_count; i++) {

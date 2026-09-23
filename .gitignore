@@ -25,3 +25,9 @@ lex.yy.c
 # Editor
 .vscode/
 
+# AI tools & artifacts
+*.ai
+.gemini/
+.claude/
+.cursor/
+

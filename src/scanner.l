@@ -47,6 +47,7 @@ IDENTIFICADOR           {LETRA}({LETRA}|{DIGITO}|{GUIONES})*
 CONSTAINTEGER           (-?[1-9][0-9]{0,4}|0)
 CONSTAFLOAT             {DIGITO}+\.{DIGITO}+
 CONSTCADENA             \"[^\n\"]*\"
+CONSTCHAR               \'([^\\'\n]|\\.)\'
 OPSUMA                  \+
 OPRESTA                 -
 OPMULTIPLICACION        \*
@@ -73,7 +74,7 @@ ELSE                    else|ELSE
 WHILE                   while|WHILE
 FOR                     for|FOR
 RETURN                  return|RETURN
-INTEGER                 integer|INTEGER
+INTEGER                 int|integer|INT|INTEGER
 FLOAT                   float|FLOAT
 CHAR                    char|CHAR
 DOUBLE                  double|DOUBLE
@@ -107,6 +108,7 @@ READ                    read|READ
 {CONSTAINTEGER}         { verificarRango(yytext); MAKE_TOKEN(TOK_CONSTAINTEGER); }
 {CONSTAFLOAT}           { MAKE_TOKEN(TOK_CONSTAFLOAT); }
 {CONSTCADENA}           { MAKE_TOKEN(TOK_CONSTCADENA); }
+{CONSTCHAR}             { MAKE_TOKEN(TOK_CONSTCHAR); }
 
 {IDENTIFICADOR}         { MAKE_TOKEN(TOK_IDENTIFICADOR); }
 
@@ -115,13 +117,13 @@ READ                    read|READ
 {OPMULTIPLICACION}      { MAKE_TOKEN(TOK_OPMULTIPLICACION); }
 {OPDIVISION}            { MAKE_TOKEN(TOK_OPDIVISION); }
 
+{OPIGUALDAD}            { MAKE_TOKEN(TOK_OPIGUALDAD); }
+{OPDIFERENTE}           { MAKE_TOKEN(TOK_OPDIFERENTE); }
+{OPMAYORIGUAL}          { MAKE_TOKEN(TOK_OPMAYORIGUAL); }
+{OPMENORIGUAL}          { MAKE_TOKEN(TOK_OPMENORIGUAL); }
 {OPIGUAL}               { MAKE_TOKEN(TOK_OPIGUAL); }
 {OPMAYOR}               { MAKE_TOKEN(TOK_OPMAYOR); }
 {OPMENOR}               { MAKE_TOKEN(TOK_OPMENOR); }
-{OPMAYORIGUAL}          { MAKE_TOKEN(TOK_OPMAYORIGUAL); }
-{OPMENORIGUAL}          { MAKE_TOKEN(TOK_OPMENORIGUAL); }
-{OPIGUALDAD}            { MAKE_TOKEN(TOK_OPIGUALDAD); }
-{OPDIFERENTE}           { MAKE_TOKEN(TOK_OPDIFERENTE); }
 {OPNEGACION}            { MAKE_TOKEN(TOK_OPNEGACION); }
 {OPDOSPUNTOS}           { MAKE_TOKEN(TOK_OPDOSPUNTOS); }
 

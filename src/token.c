@@ -48,6 +48,7 @@ const char *token_type_name(TokenType type) {
         case TOK_CONSTAINTEGER:         return "CONSTAINTEGER";
         case TOK_CONSTAFLOAT:           return "CONSTAFLOAT";
         case TOK_CONSTCADENA:           return "CONSTCADENA";
+        case TOK_CONSTCHAR:             return "CONSTCHAR";
         
         case TOK_OPSUMA:                return "OPSUMA";
         case TOK_OPRESTA:               return "OPRESTA";
@@ -88,6 +89,7 @@ const char *token_category(TokenType type) {
     if (type == TOK_CONSTAINTEGER) return "Número Entero";
     if (type == TOK_CONSTAFLOAT) return "Número Flotante";
     if (type == TOK_CONSTCADENA) return "Cadena";
+    if (type == TOK_CONSTCHAR) return "Carácter";
     if (type >= TOK_OPSUMA && type <= TOK_OPDOSPUNTOS) return "Operador";
     if (type >= TOK_LLAVEABIERTA && type <= TOK_CHARPUNTO) return "Separador";
     if (type == TOK_LEXICAL_ERROR) return "Error Léxico";

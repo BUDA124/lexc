@@ -14,6 +14,7 @@ void print_usage(FILE *stream, const char *prog_name) {
         "  -o <ruta>   Ruta de salida del PDF (por defecto: output/<nombre>.pdf)\n"
         "  -t <ruta>   Ruta de salida del .tex (por defecto: output/<nombre>.tex)\n"
         "  -n          No abrir el visor de PDF al finalizar\n"
+        "  -s          Solo preprocesar y escanear (no generar reporte)\n"
         "  -h          Mostrar este mensaje de ayuda\n"
         "\n"
         "Ejemplos:\n"
@@ -36,13 +37,14 @@ int parse_arguments(int argc, char **argv, ProgramOptions *options) {
     memset(options->tex_path, 0, sizeof(options->tex_path));
     options->no_viewer = 0;
     options->show_help = 0;
+    options->scan_only = 0;
     options->input_path = NULL;
     options->group_members = "Equipo Proyecto 1";
     options->course_term = "2025-2";
 
     optind = 1; /* Reset getopt */
 
-    while ((opt = getopt(argc, argv, "o:t:nh")) != -1) {
+    while ((opt = getopt(argc, argv, "o:t:nsh")) != -1) {
         switch (opt) {
             case 'o':
                 snprintf(options->pdf_path, sizeof(options->pdf_path), "%s", optarg);
@@ -54,6 +56,9 @@ int parse_arguments(int argc, char **argv, ProgramOptions *options) {
                 break;
             case 'n':
                 options->no_viewer = 1;
+                break;
+            case 's':
+                options->scan_only = 1;
                 break;
             case 'h':
                 options->show_help = 1;

@@ -28,6 +28,7 @@ typedef enum {
     TOK_CONSTAINTEGER,
     TOK_CONSTAFLOAT,
     TOK_CONSTCADENA,
+    TOK_CONSTCHAR,
     
     // Operadores
     TOK_OPSUMA,

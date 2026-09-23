@@ -67,6 +67,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -f $(TARGET)
 	rm -rf $(OUTPUT_DIR)/*
+	rm -f Proyecto1_Grupo.tgz
 
 # ============================================================
 # Pruebas

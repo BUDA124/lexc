@@ -10,6 +10,7 @@ typedef struct {
     char tex_path[512];        /* Ruta de salida del .tex */
     int no_viewer;             /* 1 si se usa -n (no abrir visor) */
     int show_help;             /* 1 si se usa -h (mostrar ayuda) */
+    int scan_only;             /* 1 si se usa -s (solo preprocesar y escanear) */
     const char *group_members; /* Nombres del equipo */
     const char *course_term;   /* Semestre */
 } ProgramOptions;
