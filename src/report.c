@@ -153,15 +153,16 @@ static Category classify(TokenType t)
     case TOK_CONSTAINTEGER: return CAT_INT;
     case TOK_CONSTAFLOAT:   return CAT_FLOAT;
     case TOK_CONSTCADENA:   return CAT_STRING;
+    case TOK_CONSTCHAR:     return CAT_CHAR;
     case TOK_LEXICAL_ERROR: return CAT_ERROR;
     case TOK_WHITESPACE:
     case TOK_NEWLINE:
     case TOK_EOF:           return CAT_NONE;
     default:                break;
     }
-    if (v >= (int)TOK_IF && v <= (int)TOK_READ)                   return CAT_KEYWORD;
-    if (v >= (int)TOK_OPSUMA && v <= (int)TOK_OPDOSPUNTOS)        return CAT_OP;
-    if (v >= (int)TOK_LLAVEABIERTA && v <= (int)TOK_CHARPUNTO)    return CAT_SEP;
+    if (v >= (int)TOK_KEYWORD_START && v <= (int)TOK_KEYWORD_END) return CAT_KEYWORD;
+    if (v >= (int)TOK_OP_START && v <= (int)TOK_OP_END)           return CAT_OP;
+    if (v >= (int)TOK_SEP_START && v <= (int)TOK_SEP_END)         return CAT_SEP;
     return CAT_NONE;
 }
 
@@ -701,7 +702,7 @@ static void write_title_frame(FILE *f, const ReportConfig *cfg)
 typedef struct { const char *title; const char *desc; } SectionInfo;
 
 static const SectionInfo SECTIONS[] = {
-    { "El proceso de scanning" },
+    { "El proceso de scanning", "De caracteres a tokens con significado léxico" },
     { "La herramienta Flex",    "De expresiones regulares a un autómata en C" },
     { "Fuente preprocesada",    "El programa que entró al scanner, lexema por lexema" },
     { "Errores léxicos",        "Secuencias que no pertenecen a ninguna categoría" },
@@ -1076,6 +1077,7 @@ static void write_code_frames(FILE *f, const Layout *L)
         part++;
         long a = first_line_in(L, start, end), b = last_line_in(L, start, end);
         fputs("\\begin{frame}[t]{Fuente después del preproceso}\n", f);
+        fprintf(f, "\\framesubtitle{Parte %zu de %zu}\n", part, total);
         if (a > 0 && b > a)       fprintf(f, "%% Líneas %ld--%ld\n", a, b);
         else if (a > 0)           fprintf(f, "%% Línea %ld\n", a);
         else                      fputs("% Continuación\n", f);
@@ -1129,6 +1131,7 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
         part++;
         size_t in_frame = 0;
         fprintf(f, "\\begin{frame}{Errores léxicos detectados}\n"
+                   "\\framesubtitle{%zu errores en total (parte %zu de %zu)}\n"
                    "\\centering\\small\n"
                    "\\begin{tabular}{@{}r r l l@{}}\n\\toprule\n"
                    "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n",
@@ -1237,6 +1240,7 @@ static int cmp_typecount(const void *a, const void *b)
 
 static void write_type_detail(FILE *f, const TokenStats *stats, const ReportData *d)
 {
+    (void)d;
     TypeCount items[TOK_TYPE_COUNT];
     int n = 0;
     for (int t = 0; t < (int)TOK_TYPE_COUNT; t++)
