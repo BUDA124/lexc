@@ -36,7 +36,9 @@ int main(int argc, char **argv) {
     }
 
     // 4. Preprocess
-    fprintf(stdout, "[1/4] Preprocesando '%s' -> '%s'...\n", options.input_path, temp_path);
+    if (options.verbose) {
+        fprintf(stdout, "[1/4] Preprocesando '%s' -> '%s'...\n", options.input_path, temp_path);
+    }
     if (preprocess_file(options.input_path, temp_path) != 0) {
         fprintf(stderr, "Error en preprocesamiento: %s\n",
                 preprocessor_last_error() ? preprocessor_last_error() : "desconocido");
@@ -44,7 +46,9 @@ int main(int argc, char **argv) {
     }
 
     // 5. Scan tokens
-    fprintf(stdout, "[2/4] Escaneando tokens...\n");
+    if (options.verbose) {
+        fprintf(stdout, "[2/4] Escaneando tokens...\n");
+    }
     if (scanner_open(temp_path) != 0) {
         fprintf(stderr, "Error al abrir scanner: %s\n",
                 scanner_last_error() ? scanner_last_error() : "desconocido");
@@ -92,16 +96,20 @@ int main(int argc, char **argv) {
 
     scanner_close();
 
-    fprintf(stdout, "    Tokens encontrados: %lu\n", (unsigned long)stats.total);
-
-    // 6. Print statistics summary
-    stats_print(&stats);
+    if (options.verbose) {
+        fprintf(stdout, "    Tokens encontrados: %lu\n", (unsigned long)stats.total);
+        stats_print(&stats);
+    }
 
     // 7. Generate report (unless scan-only mode)
     if (options.scan_only) {
-        fprintf(stdout, "[3/3] Modo scan-only: reporte omitido.\n");
+        if (options.verbose) {
+            fprintf(stdout, "[3/3] Modo scan-only: reporte omitido.\n");
+        }
     } else {
-        fprintf(stdout, "[3/4] Generando reporte Beamer -> '%s'...\n", options.pdf_path);
+        if (options.verbose) {
+            fprintf(stdout, "[3/4] Generando reporte Beamer -> '%s'...\n", options.pdf_path);
+        }
         ReportConfig report_config = {
             .processed_source_path = temp_path,
             .tex_path = options.tex_path,
@@ -122,7 +130,9 @@ int main(int argc, char **argv) {
             return EXIT_FAILURE;
         }
 
-        fprintf(stdout, "[4/4] Reporte generado exitosamente: '%s'\n", options.pdf_path);
+        if (options.verbose) {
+            fprintf(stdout, "[4/4] Reporte generado exitosamente: '%s'\n", options.pdf_path);
+        }
     }
 
     // 8. Cleanup

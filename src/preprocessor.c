@@ -354,12 +354,24 @@ static int process_file(const char *filepath, FILE *out) {
                         memcpy(inc_name, p, name_len);
                         inc_name[name_len] = '\0';
 
-                        /* Resolver ruta relativa al archivo actual */
+                        /* Resolver ruta: primero relativo al archivo, luego directorio actual */
                         char resolved[MAX_PATH_LEN * 2];
                         snprintf(resolved, sizeof(resolved), "%s/%s", base_dir, inc_name);
 
+                        const char *target_inc = resolved;
+                        FILE *test_f = fopen(resolved, "r");
+                        if (test_f) {
+                            fclose(test_f);
+                        } else {
+                            test_f = fopen(inc_name, "r");
+                            if (test_f) {
+                                fclose(test_f);
+                                target_inc = inc_name;
+                            }
+                        }
+
                         /* Procesar recursivamente */
-                        if (process_file(resolved, out) != 0) {
+                        if (process_file(target_inc, out) != 0) {
                             fclose(in);
                             pop_include();
                             return -1;
