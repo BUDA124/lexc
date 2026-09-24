@@ -2,24 +2,139 @@
 % Configuración de tema visual y estilos para el reporte Beamer (Proyecto 1)
 % Fase 6: Criterio de calidad y paleta de colores para categorías léxicas
 
-% Paleta de colores para categorías léxicas
-\definecolor{TokenKeyword}{RGB}{0, 51, 153}       % Azul oscuro
-\definecolor{TokenIdent}{RGB}{34, 34, 34}         % Gris muy oscuro / negro
-\definecolor{TokenNum}{RGB}{204, 102, 0}          % Naranja
-\definecolor{TokenString}{RGB}{0, 128, 0}         % Verde oscuro
-\definecolor{TokenChar}{RGB}{0, 128, 128}         % Verde azulado (Teal)
-\definecolor{TokenOp}{RGB}{128, 0, 128}           % Morado
-\definecolor{TokenSep}{RGB}{102, 102, 102}        % Gris medio
-\definecolor{TokenErrBg}{RGB}{255, 204, 204}      % Fondo rojo suave
-\definecolor{TokenErrText}{RGB}{178, 34, 34}      % Rojo oscuro
+%report.c copia este archivo DENTRO del .tex generado, de modo que el
+%.tex queda autocontenido y se puede recompilar en cualquier carpeta 
 
-% Comandos semánticos para resaltado léxico
-\newcommand{\tokenKeyword}[1]{\textbf{\textcolor{TokenKeyword}{#1}}}
-\newcommand{\tokenIdent}[1]{\textcolor{TokenIdent}{#1}}
-\newcommand{\tokenNumber}[1]{\textcolor{TokenNum}{#1}}
-\newcommand{\tokenString}[1]{\textcolor{TokenString}{#1}}
-\newcommand{\tokenChar}[1]{\textcolor{TokenChar}{#1}}
-\newcommand{\tokenOperator}[1]{\textbf{\textcolor{TokenOp}{#1}}}
-\newcommand{\tokenSeparator}[1]{\textcolor{TokenSep}{#1}}
-\newcommand{\tokenError}[1]{\colorbox{TokenErrBg}{\textbf{\textcolor{TokenErrText}{#1}}}}
 
+% Paleta general
+
+\definecolor{Navy}{HTML}{14213D}
+\definecolor{NavyLight}{HTML}{25375C}
+\definecolor{Accent}{HTML}{F2A541}
+\definecolor{Teal}{HTML}{2A9D8F}
+\definecolor{Ink}{HTML}{1F2430}
+\definecolor{Muted}{HTML}{6B7280}
+\definecolor{CodeBg}{HTML}{F7F8FA}
+\definecolor{CodeRule}{HTML}{D6DAE1}
+\definecolor{LineNo}{HTML}{9AA3AF}
+
+
+% Paleta léxica: cada categoría combina color + peso/inclinación + fondo
+
+\definecolor{TokKeyword}{HTML}{1D3FA6}   % azul        
+\definecolor{TokIdent}{HTML}{23262E}     % casi negro 
+\definecolor{TokInt}{HTML}{D2691E}       % naranja     
+\definecolor{TokFloat}{HTML}{8F4A0C}     % café        
+\definecolor{TokString}{HTML}{1E7B34}    % verde       
+\definecolor{TokStringBg}{HTML}{E3F4E7}
+\definecolor{TokChar}{HTML}{0B7285}      % verde azul.
+\definecolor{TokCharBg}{HTML}{DDF3F6}
+\definecolor{TokOp}{HTML}{7B2CBF}        % morado      
+\definecolor{TokSep}{HTML}{7A8190}       % gris        
+\definecolor{TokErr}{HTML}{B00020}       % rojo       
+\definecolor{TokErrBg}{HTML}{FFD3DA}
+
+% Fondo ajustado a la altura de la línea 
+
+\newcommand{\tokbg}[2]{{\setlength{\fboxsep}{0pt}\colorbox{#1}{\rule[-0.3em]{0pt}{1.12em}#2}}}
+
+\newcommand{\tokenKeyword}[1]{{\bfseries\color{TokKeyword}#1}}
+\newcommand{\tokenIdent}[1]{{\color{TokIdent}#1}}
+\newcommand{\tokenInteger}[1]{{\slshape\color{TokInt}#1}}
+\newcommand{\tokenFloat}[1]{{\bfseries\slshape\color{TokFloat}#1}}
+\newcommand{\tokenString}[1]{\tokbg{TokStringBg}{\color{TokString}#1}}
+\newcommand{\tokenChar}[1]{\tokbg{TokCharBg}{\itshape\color{TokChar}#1}}
+\newcommand{\tokenOperator}[1]{{\bfseries\color{TokOp}#1}}
+\newcommand{\tokenSeparator}[1]{{\color{TokSep}#1}}
+\newcommand{\tokenError}[1]{\tokbg{TokErrBg}{\bfseries\color{TokErr}#1}}
+
+
+% Bloque de código con números de línea
+
+\newlength{\tokcw}
+\newlength{\codegutterw}
+\newsavebox{\codebox}
+\newcommand{\cgap}[1]{\hspace*{#1\tokcw}}
+\newcommand{\codegutter}[1]{\makebox[\codegutterw][r]{\tiny\color{LineNo}#1}\hspace{0.5em}{\color{CodeRule}\vrule width 0.6pt}\hspace{0.6em}}
+\newcommand{\codeline}[2]{\codegutter{#1}\strut#2\par}
+\newcommand{\codecont}[1]{\codegutter{$\hookrightarrow$}\strut#1\par}
+\newcommand{\codeskip}[1]{\codegutter{$\cdots$}\strut{\rmfamily\itshape\tiny\color{LineNo}#1 líneas vacías omitidas}\par}
+\newenvironment{codeblock}[1]{%
+  \begin{lrbox}{\codebox}%
+  \begin{minipage}[t]{\dimexpr\linewidth-12pt\relax}%
+  \ttfamily\scriptsize\settowidth{\tokcw}{x}%
+  \settowidth{\codegutterw}{\tiny #1}%
+  \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+  \setlength{\baselineskip}{1.16em}%
+}{%
+  \end{minipage}\end{lrbox}%
+  {\setlength{\fboxsep}{5.5pt}\setlength{\fboxrule}{0.5pt}%
+   \noindent\fcolorbox{CodeRule}{CodeBg}{\usebox{\codebox}}}%
+}
+\newcommand{\codelegend}{%
+  \par\vfill
+  {\centering\scriptsize\ttfamily
+   \tokenKeyword{clave}\enspace\tokenIdent{ident}\enspace\tokenInteger{entero}\enspace
+   \tokenFloat{flotante}\enspace\tokenChar{'c'}\enspace\tokenString{"cadena"}\enspace
+   \tokenOperator{op}\enspace\tokenSeparator{sep}\enspace\tokenError{error}\par}%
+  \vspace{2pt}}
+
+
+% Apariencia general de Beamer
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{structure}{fg=Navy}
+\setbeamercolor{alerted text}{fg=Accent!85!black}
+\setbeamercolor{frametitle}{fg=white,bg=Navy}
+\setbeamercolor{framesubtitle}{fg=Accent,bg=Navy}
+\setbeamercolor{accentline}{bg=Accent}
+\setbeamercolor{footline}{fg=Muted,bg=white}
+\setbeamercolor{block title}{fg=white,bg=NavyLight}
+\setbeamercolor{block body}{fg=Ink,bg=CodeBg}
+\setbeamercolor{block title alerted}{fg=white,bg=TokErr}
+\setbeamercolor{block body alerted}{fg=Ink,bg=TokErrBg!45}
+\setbeamercolor{block title example}{fg=white,bg=Teal}
+\setbeamercolor{block body example}{fg=Ink,bg=Teal!8}
+\setbeamercolor{itemize item}{fg=Accent}
+\setbeamercolor{itemize subitem}{fg=Teal}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\scriptsize}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamersize{text margin left=1.2em,text margin right=1.2em}
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=1.2em,rightskip=1.2em,ht=3.0ex,dp=1.3ex]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+  \end{beamercolorbox}%
+  \ifx\insertframesubtitle\empty\else%
+    \nointerlineskip%
+    \begin{beamercolorbox}[wd=\paperwidth,leftskip=1.2em,rightskip=1.2em,ht=1.6ex,dp=1.0ex]{framesubtitle}%
+      \usebeamerfont{framesubtitle}\insertframesubtitle%
+    \end{beamercolorbox}%
+  \fi%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.4pt,dp=0pt]{accentline}\end{beamercolorbox}%
+  \vspace{0.35em}%
+}
+
+\setbeamertemplate{footline}{}
+
+
+% Estilos TikZ compartidos
+
+\tikzset{
+  pill/.style={rounded corners=2.5pt, draw=#1, line width=0.7pt, fill=white,
+               inner sep=3.5pt, font=\ttfamily\footnotesize, minimum height=1.5em},
+  stage/.style={rounded corners=3pt, fill=#1, text=white, align=center,
+                font=\scriptsize\bfseries, inner sep=4pt, minimum height=2.5em},
+  flow/.style={-{Stealth[length=5pt]}, line width=0.9pt, draw=Muted},
+  lbl/.style={font=\tiny, text=Muted, inner sep=1pt},
+  card/.style={rounded corners=4pt, fill=CodeBg, draw=CodeRule, line width=0.5pt,
+               minimum width=3.2cm, minimum height=2.2cm, align=center},
+}
