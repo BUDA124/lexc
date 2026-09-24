@@ -693,7 +693,7 @@ static void write_title_frame(FILE *f, const ReportConfig *cfg)
           "     {\\color{white}\\small ", f);
     put_escaped(f, cfg->course_term, 0, 0);
     fputs("}\\\\[7pt]\n"
-          "     {\\color{white!55!Navy}\\scriptsize " REPORT_COURSE " \\textperiodcentered{} " REPORT_INSTITUTION "}};\n", f);
+          "     {\\color{white!55!Navy}\\scriptsize " REPORT_COURSE " \\hspace{3.9em} " REPORT_INSTITUTION "}};\n", f);
 
 
     fputs("\\end{tikzpicture}\n\\end{frame}\n\n", f);
