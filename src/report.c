@@ -16,7 +16,7 @@
 /*Parámetros editables*/
 
 #define REPORT_TITLE          "Analizador léxico"
-#define REPORT_SUBTITLE       "Proyecto 1: preproceso y scanner con Flex"
+#define REPORT_SUBTITLE       "Preproceso y scanner con Flex"
 #define REPORT_COURSE         "Compiladores e Intérpretes"
 #define REPORT_INSTITUTION    "Instituto Tecnológico de Costa Rica"
 #define THEME_RELATIVE_PATH   "assets/beamer_theme.tex"
