@@ -779,7 +779,7 @@ static void write_text_to_tokens(FILE *f, const ReportConfig *cfg)
     fputs("\\begin{frame}{Del texto a los tokens}\n", f);
     if (first == cfg->token_count) {
         fputs("\\framesubtitle{La fuente analizada no contiene lexemas}\n"
-              "\\centering\\vfill{\\large\\color{Muted} El archivo preprocesado está vacío: el scanner devolvió directamente \\texttt{EOF}.}\\vfill\n"
+              
               "\\end{frame}\n\n", f);
         return;
     }
@@ -1060,7 +1060,6 @@ static void write_code_frames(FILE *f, const Layout *L)
 
     if (L->count == 0) {
         fputs("\\begin{frame}[t]{Fuente después del preproceso}\n"
-              "\\framesubtitle{El archivo preprocesado no contiene lexemas}\n"
               "\\vfill\\centering{\\large\\color{Muted} No hay código que mostrar: la entrada quedó vacía después del preproceso.}\n"
               "\\codelegend\n\\end{frame}\n\n", f);
         return;
@@ -1077,11 +1076,10 @@ static void write_code_frames(FILE *f, const Layout *L)
         }
         part++;
         long a = first_line_in(L, start, end), b = last_line_in(L, start, end);
-        fputs("\\begin{frame}[t]{Fuente después del preproceso}\n\\framesubtitle{", f);
-        if (a > 0 && b > a)       fprintf(f, "Líneas %ld--%ld", a, b);
-        else if (a > 0)           fprintf(f, "Línea %ld", a);
-        else                      fputs("Continuación", f);
-        fprintf(f, " \\textperiodcentered{} parte %zu de %zu}\n", part, total);
+        fputs("\\begin{frame}[t]{Fuente después del preproceso}\n", f);
+        if (a > 0 && b > a)       fprintf(f, "%% Líneas %ld--%ld\n", a, b);
+        else if (a > 0)           fprintf(f, "%% Línea %ld\n", a);
+        else                      fputs("% Continuación\n", f);
         fprintf(f, "\\begin{codeblock}{%s}\n", gutter_sample);
         for (size_t i = start; i < end; i++) {
             const Row *r = &L->rows[i];
@@ -1132,7 +1130,6 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
         part++;
         size_t in_frame = 0;
         fprintf(f, "\\begin{frame}{Errores léxicos detectados}\n"
-                   "\\framesubtitle{%lu en total \\textperiodcentered{} parte %zu de %zu}\n"
                    "\\centering\\small\n"
                    "\\begin{tabular}{@{}r r l l@{}}\n\\toprule\n"
                    "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n",
@@ -1163,7 +1160,6 @@ static void write_summary_table(FILE *f, const ReportData *d)
     for (int c = 0; c < CAT_COUNT; c++) if (d->cat_count[c] > maxc) maxc = d->cat_count[c];
 
     fputs("\\begin{frame}{Resumen por categoría}\n", f);
-    fprintf(f, "\\framesubtitle{%lu tokens reconocidos \\textperiodcentered{} misma fuente de datos que las gráficas}\n", d->total);
     fputs("\\centering\\small\n\\begin{tabular}{@{}l r r l@{}}\n\\toprule\n"
           "\\textbf{Categoría} & \\textbf{Cantidad} & \\textbf{\\%} & \\textbf{Distribución}\\\\\n\\midrule\n", f);
     for (int c = 0; c < CAT_COUNT; c++) {
@@ -1207,7 +1203,7 @@ static void write_histogram(FILE *f, const ReportData *d)
     if (n == 0) { write_no_data_chart(f, "Histograma de tokens por categoría"); return; }
 
     fputs("\\begin{frame}{Histograma de tokens por categoría}\n", f);
-    fprintf(f, "\\framesubtitle{%lu tokens en %d categorías \\textperiodcentered{} datos reales}\n", d->total, n);
+    fprintf(f, "\\framesubtitle{%lu tokens en %d categorías }\n", d->total, n);
     fputs("\\centering\n\\begin{tikzpicture}\n\\begin{axis}[\n"
           "  width=0.97\\linewidth, height=0.74\\textheight, ybar, ymin=0,\n", f);
     fprintf(f, "  bar width=%.1fpt, xmin=0.4, xmax=%.1f,\n", n > 6 ? 20.0 : 26.0, n + 0.6);
@@ -1256,7 +1252,7 @@ static void write_type_detail(FILE *f, const TokenStats *stats, const ReportData
     int bars = shown + (others ? 1 : 0);
 
     fputs("\\begin{frame}{Detalle por tipo interno de token}\n", f);
-    fprintf(f, "\\framesubtitle{%d tipos distintos reportados por el scanner \\textperiodcentered{} %lu tokens}\n", n, d->total);
+    fprintf(f, "\\framesubtitle{%d tipos distintos reportados por el scanner}\n", n);
     fputs("\\centering\n\\begin{tikzpicture}\n\\begin{axis}[\n  xbar, xmin=0, y dir=reverse,\n", f);
     fprintf(f, "  width=0.86\\linewidth, height=%.2f\\textheight, bar width=%.1fpt,\n",
             bars < 5 ? 0.45 : 0.76, bars > 10 ? 6.5 : 9.0);
@@ -1336,9 +1332,7 @@ static void write_run_summary(FILE *f, const ReportData *d, size_t code_frames)
     for (int c = 0; c < CAT_COUNT; c++)
         if (d->cat_count[c] > 0 && (top < 0 || d->cat_count[c] > d->cat_count[top])) top = c;
 
-    fputs("\\begin{frame}{Resumen}\n\\framesubtitle{Archivo preprocesado: \\texttt{", f);
-    put_escaped(f, d->source_name, 0, 60);
-    fputs("}}\n\\centering\\vspace{1.2em}\n\\begin{tikzpicture}[node distance=0.32cm]\n", f);
+    fputs("\\begin{frame}{Resumen}\n\\centering\\vspace{1.2em}\n\\begin{tikzpicture}[node distance=0.32cm]\n", f);
     fprintf(f, "\\node[card] (c1) {{\\color{Navy}\\fontsize{22}{24}\\selectfont\\bfseries %lu}\\\\[5pt]{\\scriptsize\\color{Muted}tokens reconocidos}};\n", d->total);
     if (d->source_lines >= 0)
         fprintf(f, "\\node[card,right=of c1] (c2) {{\\color{Teal}\\fontsize{22}{24}\\selectfont\\bfseries %ld}\\\\[5pt]{\\scriptsize\\color{Muted}líneas preprocesadas}};\n", d->source_lines);
