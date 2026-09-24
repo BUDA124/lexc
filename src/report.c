@@ -845,14 +845,13 @@ static void write_text_to_tokens(FILE *f, const ReportConfig *cfg)
     fputs("\\draw[flow] (src.south) -- node[right,font=\\scriptsize,text=Muted] {\\texttt{get\\_token()}} (m.north);\n"
           "\\node[lbl,anchor=north,font=\\tiny\\bfseries] at ($(m.south)+(0,-4pt)$) {SALIDA: TOKENS CON CATEGORÍA, TIPO INTERNO Y POSICIÓN};\n"
           "\\end{tikzpicture}\n\\vfill\n"
-          "{\\scriptsize\\color{Muted} Ejemplo tomado del archivo analizado: los espacios separan lexemas, pero no generan tokens.}\n"
+
           "\\end{frame}\n\n", f);
 }
 
 static void write_token_anatomy(FILE *f, const ReportConfig *cfg, const ReportData *d)
 {
     fputs("\\begin{frame}{Tokens reales}\n"
-          "\\framesubtitle{Primera aparición de cada categoría en la fuente analizada}\n"
           "\\centering\\small\n", f);
     int rows = 0;
     for (int c = 0; c < CAT_COUNT; c++) if (d->first_tok[c] >= 0) rows++;
