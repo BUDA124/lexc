@@ -5,24 +5,18 @@
 
 // Tipo de tokens
 typedef enum {
-    // === Palabras reservadas (inicio de categoría Palabras Clave) ===
+    // === Palabras reservadas ===
     TOK_KEYWORD_START,
     TOK_IF = TOK_KEYWORD_START,
-    TOK_ELIF,
     TOK_ELSE,
     TOK_WHILE,
     TOK_FOR,
     TOK_RETURN,
-    TOK_INTEGER,
     TOK_FLOAT,
     TOK_CHAR,
     TOK_DOUBLE,
     TOK_VOID,
-    TOK_DECVAR,
-    TOK_ENDDEC,
-    TOK_END,
-    TOK_WRITE,
-    TOK_READ,
+
     // Palabras reservadas de C estándar adicionales
     TOK_AUTO,
     TOK_BREAK,

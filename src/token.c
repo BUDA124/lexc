@@ -26,21 +26,14 @@ void token_destroy(Token *token) {
 const char *token_type_name(TokenType type) {
     switch (type) {
         case TOK_IF:                    return "IF";
-        case TOK_ELIF:                  return "ELIF";
         case TOK_ELSE:                  return "ELSE";
         case TOK_WHILE:                 return "WHILE";
         case TOK_FOR:                   return "FOR";
         case TOK_RETURN:                return "RETURN";
-        case TOK_INTEGER:               return "INTEGER";
         case TOK_FLOAT:                 return "FLOAT";
         case TOK_CHAR:                  return "CHAR";
         case TOK_DOUBLE:                return "DOUBLE";
         case TOK_VOID:                  return "VOID";
-        case TOK_DECVAR:                return "DECVAR";
-        case TOK_ENDDEC:                return "ENDDEC";
-        case TOK_END:                   return "END";
-        case TOK_WRITE:                 return "WRITE";
-        case TOK_READ:                  return "READ";
 
         case TOK_AUTO:                  return "AUTO";
         case TOK_BREAK:                 return "BREAK";
