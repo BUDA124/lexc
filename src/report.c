@@ -644,7 +644,7 @@ static void write_theme(FILE *f)
 static void write_preamble(FILE *f, const ReportConfig *cfg)
 {
     fputs("% _____________________________________________________________\n"
-          "% Generado automáticamente por ./analizador -- no editar a mano\n"
+          "% Generado automáticamente por ./analizador\n"
           "% ______________________________________________________________\n"
           "\\documentclass[11pt,aspectratio=169]{beamer}\n"
           "\\usepackage[utf8]{inputenc}\n"
