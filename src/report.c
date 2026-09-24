@@ -875,7 +875,7 @@ static void write_token_anatomy(FILE *f, const ReportConfig *cfg, const ReportDa
         fputs("\\\\\n", f);
     }
     fputs("\\bottomrule\n\\end{tabular}\n\\vfill\n"
-          "{\\scriptsize\\color{Muted} Cada token es una estructura \\texttt{Token}: tipo, puntero a su propio lexema, línea, columna y valor numérico.}\n"
+          "{\\scriptsize\\color{black} Estructura \\texttt{Token}: tipo, puntero a su propio lexema, línea, columna y valor numérico.}\n"
           "\\end{frame}\n\n", f);
 }
 
@@ -1127,10 +1127,11 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
         part++;
         size_t in_frame = 0;
         fprintf(f, "\\begin{frame}{Errores léxicos detectados}\n"
-                   "\\framesubtitle{%zu errores en total (parte %zu de %zu)}\n"
+               "\\framesubtitle{%lu errores en total (parte %zu de %zu)}\n"
                    "\\centering\\small\n"
                    "\\begin{tabular}{@{}r r l l@{}}\n\\toprule\n"
-                   "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n");
+               "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n",
+            d->error_count, part, frames);
         for (; i < cfg->token_count && in_frame < ERR_ROWS_PER_FRAME && listed < total_listed; i++) {
             const Token *t = &cfg->tokens[i];
             if (classify(t->type) != CAT_ERROR) continue;
@@ -1285,7 +1286,7 @@ static void write_pie(FILE *f, const ReportData *d)
 
     const double R_OUT = 1.0, R_IN = 0.55;
     fputs("\\begin{frame}{Gráfico de pastel de categorías léxicas}\n", f);
-    fprintf(f, "\\framesubtitle{Mismas %d categorías y cantidades que el histograma \\textperiodcentered{} generado con \\texttt{pgfplots}}\n", n);
+    fprintf(f, "\\framesubtitle{Mismas %d categorías y cantidades que el histograma}\n", n);
     fputs("\\centering\n\\begin{tikzpicture}\n\\begin{axis}[\n"
           "  hide axis, axis equal image, height=0.80\\textheight,\n"
           "  xmin=-1.08, xmax=1.08, ymin=-1.08, ymax=1.08,\n"
