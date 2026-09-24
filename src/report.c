@@ -658,7 +658,7 @@ static void write_preamble(FILE *f, const ReportConfig *cfg)
 
     fputs("\\title[" REPORT_TITLE "]{" REPORT_TITLE "}\n", f);
     fputs("\\subtitle{" REPORT_SUBTITLE "}\n", f);
-    fputs("\\author{", f);  put_escaped(f, cfg->group_members, 0, 0); fputs("}\n", f);
+    fputs("\\author{", f);  fputs(cfg->group_members, f); fputs("}\n", f);
     fputs("\\date[", f);    put_escaped(f, cfg->course_term, 0, 40);  fputs("]{", f);
     put_escaped(f, cfg->course_term, 0, 0); fputs("}\n", f);
     fputs("\\institute{" REPORT_INSTITUTION "}\n\n", f);
@@ -686,7 +686,7 @@ static void write_title_frame(FILE *f, const ReportConfig *cfg)
           "  \\node[anchor=south west,align=left,text width=10.2cm,inner sep=0pt] at ($(current page.south west)+(1.1cm,0.9cm)$)\n"
           "    {{\\color{white!55!Navy}\\tiny\\bfseries GRUPO DE TRABAJO}\\\\[1pt]\n"
           "     {\\color{white}\\small\\bfseries ", f);
-    put_escaped(f, cfg->group_members, 0, 0);
+    fputs(cfg->group_members, f);
     fputs("}\\\\[7pt]\n"
           "     {\\color{white!55!Navy}\\tiny\\bfseries SEMESTRE}\\\\[1pt]\n"
           "     {\\color{white}\\small ", f);
