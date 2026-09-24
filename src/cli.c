@@ -41,7 +41,11 @@ int parse_arguments(int argc, char **argv, ProgramOptions *options) {
     options->scan_only = 0;
     options->verbose = 0;
     options->input_path = NULL;
-    options->group_members = "Equipo 1";
+    options->group_members =
+        "Carlos Mario Castillo Mena\\\\"
+        "Natalia Acuña Alfaro\\\\"
+        "Kenneth Rojas Jiménez\\\\"
+        "Amanda Ramírez Viales";
     options->course_term = "2026-2";
 
     optind = 1; /* Reset getopt */
