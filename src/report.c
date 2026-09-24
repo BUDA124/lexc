@@ -912,7 +912,6 @@ static void write_disambiguation(FILE *f)
 "\\end{column}\n"
 "\\end{columns}\n"
 "\\vfill\n"
-"{\\scriptsize\\color{Muted} Por eso los operadores largos (\\texttt{\\textgreater{}\\textgreater{}=}, \\texttt{==}, \\texttt{\\&\\&}) nunca se parten en operadores cortos.}\n"
 "\\end{frame}\n\n", f);
 }
 
@@ -951,7 +950,6 @@ static void write_flex_frames(FILE *f)
 
     fputs(
 "\\begin{frame}{Estructura de un archivo \\texttt{.l}}\n"
-"\\framesubtitle{Tres secciones separadas por \\texttt{\\%\\%} (esquema general)}\n"
 "\\centering\\vspace{0.3em}\n"
 "\\begin{tikzpicture}[every node/.style={inner sep=5pt}]\n"
 "\\node[stage=Navy,minimum width=2.9cm,minimum height=1.35cm] (s1) at (0,0) {Definiciones\\\\[-1pt]{\\tiny\\mdseries código C y macros regulares}};\n"
@@ -975,7 +973,6 @@ static void write_flex_frames(FILE *f)
 
     fputs(
 "\\begin{frame}{Arquitectura de este analizador}\n"
-"\\framesubtitle{Cada módulo se comunica solo por su interfaz pública}\n"
 "\\centering\\vspace{0.4em}\n"
 "\\begin{tikzpicture}[every node/.style={minimum width=2.95cm,text width=2.75cm}]\n"
 "\\node[stage=Muted] (in) at (0,0) {Archivo de entrada\\\\{\\tiny\\mdseries cualquier extensión}};\n"
@@ -1016,8 +1013,7 @@ static void write_legend_frame(FILE *f, const ReportData *d)
         fprintf(f, "}} & %s & {\\scriptsize %s} & %lu\\\\\n", CATS[c].singular, CATS[c].style, d->cat_count[c]);
     }
     fputs("\\bottomrule\n\\end{tabular}\n\\vfill\n"
-          "{\\scriptsize\\color{Muted} La columna de la izquierda numera las líneas del archivo preprocesado; "
-          "$\\hookrightarrow$ indica que una línea larga continúa y $\\cdots$ resume varias líneas vacías.}\n"
+
           "\\end{frame}\n\n", f);
 }
 
@@ -1117,7 +1113,7 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
               "\\draw[white,line width=3.2pt,line cap=round,line join=round] (-0.38,0.02) -- (-0.1,-0.27) -- (0.42,0.3);\n"
               "\\end{tikzpicture}\\par\\vspace{0.8em}\n"
               "{\\Large\\bfseries\\color{Ink} No se encontraron errores léxicos}\\par\\vspace{0.3em}\n"
-              "{\\small\\color{Muted} Todos los lexemas de la fuente pertenecen a alguna categoría válida.}\n"
+              "{\\small\\color{black} Todos los lexemas de la fuente pertenecen a alguna categoría válida.}\n"
               "\\vfill\n\\end{frame}\n\n", f);
         return;
     }
@@ -1131,8 +1127,7 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
         fprintf(f, "\\begin{frame}{Errores léxicos detectados}\n"
                    "\\centering\\small\n"
                    "\\begin{tabular}{@{}r r l l@{}}\n\\toprule\n"
-                   "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n",
-                d->error_count, part, frames);
+                   "\\textbf{Línea} & \\textbf{Col.} & \\textbf{Lexema} & \\textbf{Descripción}\\\\\n\\midrule\n");
         for (; i < cfg->token_count && in_frame < ERR_ROWS_PER_FRAME && listed < total_listed; i++) {
             const Token *t = &cfg->tokens[i];
             if (classify(t->type) != CAT_ERROR) continue;
@@ -1142,7 +1137,7 @@ static void write_error_frames(FILE *f, const ReportConfig *cfg, const ReportDat
             in_frame++;
             listed++;
         }
-        fputs("\\bottomrule\n\\end{tabular}\n\\vfill\n{\\scriptsize\\color{Muted} ", f);
+        fputs("\\bottomrule\n\\end{tabular}\n\\vfill\n{\\scriptsize\\color{black} ", f);
         if (listed == total_listed && d->error_count > total_listed)
             fprintf(f, "\\ldots{} y %lu errores más. ", d->error_count - (unsigned long)total_listed);
         fputs("Todos los errores aparecen resaltados en las diapositivas de la fuente.}\n\\end{frame}\n\n", f);
@@ -1172,7 +1167,7 @@ static void write_summary_table(FILE *f, const ReportData *d)
     }
     fprintf(f, "\\midrule\n\\textbf{Total} & \\textbf{%lu} & %s & \\\\\n\\bottomrule\n\\end{tabular}\n",
             d->total, d->total ? "100.0" : "0.0");
-    fputs("\\vfill\n{\\scriptsize\\color{Muted} No se cuentan espacios, saltos de línea ni el token de fin de archivo.}\n\\end{frame}\n\n", f);
+    fputs("\\vfill\n{\\scriptsize\\color{black} Se cuentan espacios, saltos de línea ni el token de fin de archivo.}\n\\end{frame}\n\n", f);
 }
 
 static void write_no_data_chart(FILE *f, const char *title)
